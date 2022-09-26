@@ -16,7 +16,7 @@ systemctl enable --now httpd
 while getopts ":m" option; do
 	case $option in
 		m) # install and configure mysql database
-			mysql
+			mysql_install_and_config
 			;;
 	esac
 done
@@ -35,14 +35,14 @@ chmod +x wp-cli.phar
 mv wp-cli.phar /usr/local/bin/wp
 dnf install php-json -y
 cd /var/www/html/wordpress/
-wp core config --dbname="wordpress" --dbuser="wordpress" --dbpass="$dbpass" --dbhost="localhost" --dbprefix="wp_"
-wp core install --url="http://$ip" --title="Site" --admin_user="admin" --admin_password="admin" --admin_email="admin@site.com"
+/usr/local/bin/wp core config --dbname="wordpress" --dbuser="wordpress" --dbpass="$dbpass" --dbhost="localhost" --dbprefix="wp_"
+/usr/local/bin/wp core install --url="http://$ip" --title="Site" --admin_user="admin" --admin_password="admin" --admin_email="admin@site.com"
 chown apache:apache wp-config.php
 
 # RESTART HTTPD SERVICE
 systemctl restart httpd
 
-mysql () {
+mysql_install_and_config () {
 	dnf install mysql-server -y
 	systemctl enable --now mysqld
 	# CREATE MYSQL DATABASE
