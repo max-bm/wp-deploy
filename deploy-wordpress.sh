@@ -16,15 +16,9 @@ systemctl enable --now httpd
 while getopts ":m" option; do
 	case $option in
 		m) # install and configure mysql database
-			dnf install mysql-server -y
-			systemctl enable --now mysqld
-			# CREATE MYSQL DATABASE
-			mysql -e "CREATE DATABASE wordpress;"
-			mysql -e "CREATE USER wordpress IDENTIFIED BY '$dbpass';"
-			mysql -e "GRANT ALL PRIVILEGES ON wordpress.* TO 'wordpress';"
-			mysql -e "FLUSH PRIVILEGES;"
-                        ;;
- 	esac
+			mysql
+			;;
+	esac
 done
 
 # WORDPRESS INSTALL
@@ -48,3 +42,12 @@ chown apache:apache wp-config.php
 # RESTART HTTPD SERVICE
 systemctl restart httpd
 
+mysql () {
+	dnf install mysql-server -y
+	systemctl enable --now mysqld
+	# CREATE MYSQL DATABASE
+	mysql -e "CREATE DATABASE wordpress;"
+	mysql -e "CREATE USER wordpress IDENTIFIED BY '$dbpass';"
+	mysql -e "GRANT ALL PRIVILEGES ON wordpress.* TO 'wordpress';"
+	mysql -e "FLUSH PRIVILEGES;"
+}
