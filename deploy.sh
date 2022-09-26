@@ -36,7 +36,7 @@ mv wp-cli.phar /usr/local/bin/wp
 dnf install php-json -y
 cd /var/www/html/wordpress/
 /usr/local/bin/wp core config --dbname="wordpress" --dbuser="wordpress" --dbpass="$dbpass" --dbhost="localhost" --dbprefix="wp_"
-/usr/local/bin/wp core install --url="http://$ip" --title="Site" --admin_user="admin" --admin_password="admin" --admin_email="admin@site.com"
+/usr/local/bin/wp core install --url="http://$url" --title="Site" --admin_user="admin" --admin_password="admin" --admin_email="admin@site.com"
 chown apache:apache wp-config.php
 
 # RESTART HTTPD SERVICE
