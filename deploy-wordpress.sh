@@ -9,14 +9,23 @@ url=$1
 dbpass=$2
 
 dnf module reset php -y && dnf module enable php:8.0 -y
-dnf install php php-mysqlnd httpd mysql-server wget -y
-systemctl enable --now httpd && systemctl enable --now mysqld
+dnf install php php-mysqlnd httpd wget -y
+systemctl enable --now httpd 
 
-# CREATE MYSQL DATABASE
-mysql -e "CREATE DATABASE wordpress;"
-mysql -e "CREATE USER wordpress IDENTIFIED BY '$dbpass';"
-mysql -e "GRANT ALL PRIVILEGES ON wordpress.* TO 'wordpress';"
-mysql -e "FLUSH PRIVILEGES;"
+# If option 'm' given, then install and configure mysql database.
+while getopts ":m" option; do
+	case $option in
+		m) # install and configure mysql database
+			dnf install mysql-server -y
+			systemctl enable --now mysqld
+			# CREATE MYSQL DATABASE
+			mysql -e "CREATE DATABASE wordpress;"
+			mysql -e "CREATE USER wordpress IDENTIFIED BY '$dbpass';"
+			mysql -e "GRANT ALL PRIVILEGES ON wordpress.* TO 'wordpress';"
+			mysql -e "FLUSH PRIVILEGES;"
+                        ;;
+ 	esac
+done
 
 # WORDPRESS INSTALL
 cd /var/www && wget http://wordpress.org/latest.tar.gz
