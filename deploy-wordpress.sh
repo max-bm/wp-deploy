@@ -35,9 +35,6 @@ chown -R apache:apache /var/www/html/wordpress
 # APPEND TO HTTPD.CONFIG
 sed -i 's/DocumentRoot\ "\/var\/www\/html"/DocumentRoot\ "\/var\/www\/html\/wordpress"/g' /etc/httpd/conf/httpd.conf
 
-# RESTART HTTPD SERVICE
-systemctl restart httpd
-
 # INSTALL WODPRESS FROM CLI
 cd /var/www/ && wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 chmod +x wp-cli.phar
