@@ -8,7 +8,7 @@
 # INSTALLS AND ENABLES
 
 # Either provide variables as argument inputs in order [url, pwd], or set manually below.
-# ip=$(ifconfig ens160 | grep inet | cut -d: -f2 | awk '{print $2}') # This line takes ip from ifconfig - useful for vmware vms
+# url=$(ifconfig ens160 | grep inet | cut -d: -f2 | awk '{print $2}') # This line takes ip from ifconfig - useful for vmware vms
 url=$1
 dbpass=$2
 
