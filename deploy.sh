@@ -5,21 +5,35 @@
 # Second argument is wordpress database password
 # Third argument is formatted as option. If "--mysql" then script installs and configures mysql database. If null, assumes database already configured. 
 
-# INSTALLS AND ENABLES
+mysql_install_and_config () {
+	dnf install mysql-server -y
+	systemctl enable --now mysqld
+	# CREATE MYSQL DATABASE
+	mysql -e "CREATE DATABASE wordpress;"
+	mysql -e "CREATE USER wordpress IDENTIFIED BY '$dbpass';"
+	mysql -e "GRANT ALL PRIVILEGES ON wordpress.* TO 'wordpress';"
+	mysql -e "FLUSH PRIVILEGES;"
+}
 
 # Either provide variables as argument inputs in order [url, pwd], or set manually below.
 # url=$(ifconfig ens160 | grep inet | cut -d: -f2 | awk '{print $2}') # This line takes ip from ifconfig - useful for vmware vms
 url=$1
 dbpass=$2
 
+# INSTALLS AND ENABLES
 dnf module reset php -y && dnf module enable php:8.0 -y
 dnf install php php-mysqlnd httpd wget -y
 systemctl enable --now httpd 
 
 # Check for --mysql option in position 3
-if [ "$3" = "--mysql" ]; then
-	mysql_install_and_config
-fi
+while [ True ]; do
+	if [ "$3" = "--mysql" ]; then
+		mysql_install_and_config
+		shift 1
+	else
+		break
+	fi
+done
 
 # WORDPRESS INSTALL
 cd /var/www && wget http://wordpress.org/latest.tar.gz
@@ -42,12 +56,3 @@ chown apache:apache wp-config.php
 # RESTART HTTPD SERVICE
 systemctl restart httpd
 
-mysql_install_and_config () {
-	dnf install mysql-server -y
-	systemctl enable --now mysqld
-	# CREATE MYSQL DATABASE
-	mysql -e "CREATE DATABASE wordpress;"
-	mysql -e "CREATE USER wordpress IDENTIFIED BY '$dbpass';"
-	mysql -e "GRANT ALL PRIVILEGES ON wordpress.* TO 'wordpress';"
-	mysql -e "FLUSH PRIVILEGES;"
-}
