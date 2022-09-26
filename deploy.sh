@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# DEPLY WORDPRESS
+# DEPLOY WORDPRESS
 # First argument is url at which wordpress will be deployed
 # Second argument is wordpress database password
 # Third argument is formatted as option. If "--mysql" then script installs and configures mysql database. If null, assumes database already configured. 
