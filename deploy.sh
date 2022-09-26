@@ -1,6 +1,10 @@
 #!/bin/bash
 
-# Deploy wordpress from scratch
+# DEPLY WORDPRESS
+# First argument is url at which wordpress will be deployed
+# Second argument is wordpress database password
+# Third argument is formatted as option. If "--mysql" then script installs and configures mysql database. If null, assumes database already configured. 
+
 # INSTALLS AND ENABLES
 
 # Either provide variables as argument inputs in order [url, pwd], or set manually below.
@@ -12,14 +16,10 @@ dnf module reset php -y && dnf module enable php:8.0 -y
 dnf install php php-mysqlnd httpd wget -y
 systemctl enable --now httpd 
 
-# If option 'm' given, then install and configure mysql database.
-while getopts ":m" option; do
-	case $option in
-		m) # install and configure mysql database
-			mysql_install_and_config
-			;;
-	esac
-done
+# Check for --mysql option in position 3
+if [ "$3" = "--mysql" ]; then
+	mysql_install_and_config
+fi
 
 # WORDPRESS INSTALL
 cd /var/www && wget http://wordpress.org/latest.tar.gz
