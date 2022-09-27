@@ -5,8 +5,8 @@ Execute the script (you may need superuser privileges):
 
 <code>./deploy.sh [URL] [PASSWORD] [--mysql]</code>
 
-The URL argument is the domain name or IP address at which the site will be deployed. You should omit leading http:// or https:// from the URL.
+The <code>URL</code> argument is the domain name or IP address at which the site will be deployed. You should omit leading http:// or https:// from the URL.
 
-The PASSWORD argument is the password of your wordpress database. If your database is already configured, use the password previously set. If the database is to be configured by the script, this argument will set it.
+The <code>PASSWORD</code> argument is the password of your wordpress database. If your database is already configured, use the password previously set. If the database is to be configured by the script, this argument will set it.
 
-The --mysql option will install and configure your mysql database if enabled.
+The <code>--mysql</code> option will install and configure your mysql database if enabled.
